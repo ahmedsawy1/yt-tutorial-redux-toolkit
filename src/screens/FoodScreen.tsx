@@ -17,6 +17,9 @@ import Catogry from '../components/Catogry';
 import FoodCard from '../components/FoodCard';
 
 import FoodAPI from '../APIs/MyAPI';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { addItem } from '../store/cartSlice';
 
 function FoodScreen({navigation}) {
   const [data, setData] = useState([]);
@@ -51,6 +54,9 @@ function FoodScreen({navigation}) {
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }
+
+  const {items} = useSelector((state: RootState) => state.cart)
+  const dispatch = useDispatch()
 
   return (
     <MyView style={styles.con}>
@@ -94,7 +100,7 @@ function FoodScreen({navigation}) {
             title={item.title}
             price={item.price}
             image={item.image}
-            onPress={() => {}}
+            onPress={() => {dispatch(addItem(item))}}
           />
         )}
       />
@@ -122,7 +128,7 @@ function FoodScreen({navigation}) {
         }}>
           <MyText boldy style={{color:"white",  fontSize: 20, width: 50, textAlign:"center"}}>
           {/* {getTotalQuantity(cart)} */}
-          5
+          {items?.length}
           </MyText>
         <Image
         tintColor={"white"}
