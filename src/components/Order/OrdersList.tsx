@@ -6,14 +6,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
 const OrdersList = ({
-  cartItems,
   onRemove,
   onAdd,
   deletable,
   style,
   addable,
 }) => {
-  const cartItemsArray = []
   const {items} = useSelector((state: RootState) => state.cart)
 
   return (

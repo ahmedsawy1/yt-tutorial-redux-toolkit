@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react';
-import {View, StyleSheet, SafeAreaView, } from 'react-native';
+import {View, StyleSheet, SafeAreaView, Alert, } from 'react-native';
 
 import OrdersList from '../components/Order/OrdersList';
 import MyButton from '../components/MyButton';
 import MyText from '../components/MyText';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { addItem, clearCart, removeItem } from '../store/cartSlice';
+import { addItem, addOrder, clearCart, removeItem } from '../store/cartSlice';
 
 const NewOrderScreen = ({navigation}) => {
  const dispatch =  useDispatch()
@@ -20,12 +20,22 @@ const handleItemRemove = (item) => {
 const {items} = useSelector((state: RootState) => state.cart)
 const totalSum = items.reduce((acc, item) => acc + item.sum, 0);
 
+const handleOrderPress = useCallback(() => {
+  if (items.length < 1) {
+    Alert.alert('Empty Order', 'Please Add Some Dishes', [{text: 'OK'}], {
+      cancelable: false,
+    });
+  } else {
+    dispatch(addOrder({items: items, sum: totalSum}));
+    navigation.navigate('OrdersScreen');
+  }
+}, []);
+
   return (
     <View style={styles.screen}>
       <SafeAreaView>
 
       <OrdersList
-        cartItems={[]} 
         onAdd={(item) => handleItemAdd(item)}
         onRemove={(item) => handleItemRemove(item)}
         deletable
@@ -43,7 +53,7 @@ const totalSum = items.reduce((acc, item) => acc + item.sum, 0);
         <MyButton
           title="Order Now"
           style={{width: 103}}
-          onPress={() => {dispatch(clearCart())}}
+          onPress={handleOrderPress}
         />
       </View>
       </SafeAreaView>

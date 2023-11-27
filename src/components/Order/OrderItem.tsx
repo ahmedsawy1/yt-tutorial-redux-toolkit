@@ -48,14 +48,6 @@ export default function OrderItem({ order }) {
           </View>
         </View>
       </View>
-      <MyButton
-        title={showDetails ? "Hide" : "Details"}
-        onPress={handleOnDetails}
-      />
-
-      {/* {showDetails && (
-        <OrdersList cartItems={order.items} style={styles.details} />
-      )} */}
     </View>
   );
 }

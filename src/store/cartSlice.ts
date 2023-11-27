@@ -10,10 +10,12 @@ interface CartItem {
 
 interface CartState {
   items: CartItem[];
+  orders: [];
 }
 
 const initialState: CartState = {
   items: [],
+  orders: [],
 };
 
 const cartSlice = createSlice({
@@ -47,12 +49,20 @@ const cartSlice = createSlice({
         state.items = state.items.filter(item => item.id !== action.payload.id);
       }
     },
-    clearCart: state => {
+    addOrder: (state, action: PayloadAction<number>) => {
+      state.orders = [
+        ...state.orders,
+        {
+          id: new Date().toString(),
+          totalAmount: action.payload.sum,
+          date: new Date().toISOString(),
+        },
+      ];
       state.items = [];
     },
   },
 });
 
-export const {addItem, removeItem, clearCart} = cartSlice.actions;
+export const {addItem, removeItem, addOrder} = cartSlice.actions;
 
 export default cartSlice.reducer;
